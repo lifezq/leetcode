@@ -744,7 +744,7 @@ public:
 
 class TravelTree {
 public:
-     TravelTree(TreeNode* n){
+     TravelTree(TreeNode *n){
         travel(n);
     }
 
