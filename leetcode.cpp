@@ -11,6 +11,9 @@ using namespace std;
 
 class Solution{
     public:
+        /*
+        * Part 1: Array
+        */
         int removeElement(int A[], int n, int elem) {
 
             int i = 0;
@@ -589,8 +592,181 @@ class Solution{
                 start = mid + 1;
             }
         }
-        
+
         return mid;
+    }
+
+
+    /*
+    * Part 2: Bit Manipulation
+    */
+    int missingNumber(vector<int>& nums) {
+        int x = 0;
+        for (int i = 0; i <= nums.size(); i++) x ^= i;
+        for (auto n : nums) x ^= n;
+        return x;
+    }
+
+    bool isPowerOfTwo(int n) {
+       if (n < 0) return false;
+       bool hasOne = false;
+       while (n > 0) {
+           if (n & 1) {
+               if (hasOne) {
+                   return false;
+               }
+               else {
+                   hasOne = true;
+               }
+           }
+           n >>= 1;
+       }
+       return hasOne;
+    }
+
+    int hammingWeight(uint32_t n) {
+        int count = 0;
+        while (n > 0) {
+            count += n & 1;
+            n >>= 1;
+        }
+        return count;
+    }
+};
+
+typedef struct TreeNode
+{
+    int data;
+    struct TreeNode *left,*right;
+} TreeNode,*TreePtr;
+
+class DepthOfTree {
+public:
+    int num;
+    int n;
+    int maxDepth(TreeNode *root) {
+        if(!root) {
+            return 0;
+        }
+
+        //首先初始化num为最小值
+        num = numeric_limits<int>::min();
+        travel(root, 1);
+        return num;
+    }
+
+    void travel(TreeNode* node, int level) {
+        //如果没有左子树以及右子树了，就到了叶子节点
+        if(!node->left && !node->right) {
+            num = max(num, level);
+            return;
+        }
+
+        if(node->left) {
+            travel(node->left, level + 1);
+        }
+
+        if(node->right) {
+            travel(node->right, level + 1);
+        }
+    }
+
+
+    int minDepth(TreeNode *root) {
+        if(!root) {
+            return 0;
+        }
+
+        //初始化成最大值
+        n = numeric_limits<int>::max();
+        int d = 1;
+
+        depth(root, d);
+        return n;
+    }
+
+    void depth(TreeNode* node, int& d) {
+        //叶子节点，比较
+        if(!node->left && !node->right) {
+            n = min(n, d);
+            return;
+        }
+
+        if(node->left) {
+            d++;
+            depth(node->left, d);
+            d--;
+        }
+
+        if(node->right) {
+            d++;
+            depth(node->right, d);
+            d--;
+        }
+    }
+};
+
+class BuildTree {
+public:
+    unordered_map<int, int> m;
+    TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
+        if(postorder.empty()) {
+            return NULL;
+        }
+
+        for(int i = 0; i < inorder.size(); i++) {
+            m[inorder[i]] = i;
+        }
+
+        return build(inorder, 0, inorder.size() - 1,
+            postorder, 0, postorder.size() - 1);
+    }
+
+    TreeNode* build(vector<int>& inorder, int s0, int e0,
+        vector<int>& postorder, int s1, int e1) {
+        if(s0 > e0 || s1 > e1) {
+            return NULL;
+        }
+
+        // TreeNode* root = new TreeNode(postorder[e1]);
+        TreeNode* root = (TreePtr)malloc(sizeof(TreeNode));
+        root->data = postorder[e1];
+
+        int mid = m[postorder[e1]];
+        int num = mid - s0;
+
+        root->left = build(inorder, s0, mid - 1, postorder, s1, s1 + num - 1);
+        root->right = build(inorder, mid + 1, e0, postorder, s1 + num, e1 - 1);
+
+        return root;
+    }
+};
+
+class TravelTree {
+public:
+     TravelTree(TreeNode* n){
+        travel(n);
+    }
+
+    void travel(TreeNode* n){
+
+            if(!n){
+                return;
+            }
+
+            cout << "travel node:" << n->data << endl;
+
+            if(n->left){
+                cout << "travel left node:" << n->left->data << endl;
+                travel(n->left);
+            }
+
+            if(n->right){
+                cout << "travel right node:" << n->right->data << endl;
+                travel(n->right);
+            }
+
+            return;
     }
 };
 
@@ -626,5 +802,25 @@ int main(){
     bool is = s.isPalindrome(151);
     cout<<"isPalindrome:"<<is<<endl;
 
+
+    DepthOfTree st;
+    TreePtr node;
+    node = (TreePtr)malloc(sizeof(TreeNode));
+    node->data = 0;
+    node->left = (TreePtr)malloc(sizeof(TreeNode));
+    node->left->data = 1;
+    node->right = (TreePtr)malloc(sizeof(TreeNode));
+    node->right->data = 2;
+
+    new TravelTree(node);
+
+    cout << "maxDepth:" << st.maxDepth(node) << endl;
+
+    BuildTree bt;
+    vector<int> v1 = {1,2};
+    vector<int> v2 = {3,4};
+    TreeNode* node_n0 = bt.buildTree(v1 ,v2);
+   
+    new TravelTree(node_n0);
     return 0;
 }
