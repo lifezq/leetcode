@@ -807,6 +807,24 @@ public:
 
         return height;
     }
+
+    vector<vector<int> > levelOrderBottom(TreeNode *root) {
+        int depth = getHeight(root);
+        vector<vector<int>> ret(depth);
+        if(depth == 0)
+            return ret;
+        DFS(ret,ret.size()-1, root);
+        return ret;
+    }
+
+    void DFS(vector<vector<int>>& ret, int level, TreeNode* root)
+    {
+        if(root == NULL)
+            return;
+        ret[level].push_back(root->val);
+        DFS(ret,level-1,root->left);
+        DFS(ret,level-1,root->right);
+    }
 };
 
 int main(){
