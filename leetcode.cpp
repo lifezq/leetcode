@@ -753,15 +753,15 @@ public:
             if(!n){
                 return;
             }
-
-            cout << "travel node:" << n->data << endl;
-
+            
             if(n->left){
+                cout << "travel node:" << n->data << endl;
                 cout << "travel left node:" << n->left->data << endl;
                 travel(n->left);
             }
 
             if(n->right){
+                cout << "travel node:" << n->data << endl;
                 cout << "travel right node:" << n->right->data << endl;
                 travel(n->right);
             }
@@ -817,8 +817,8 @@ int main(){
     cout << "maxDepth:" << st.maxDepth(node) << endl;
 
     BuildTree bt;
-    vector<int> v1 = {1,2};
-    vector<int> v2 = {3,4};
+    vector<int> v1 = {4,2,5,1,6,3,7};
+    vector<int> v2 = {4,5,2,6,7,3,1};
     TreeNode* node_n0 = bt.buildTree(v1 ,v2);
    
     new TravelTree(node_n0);
