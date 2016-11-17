@@ -638,6 +638,7 @@ typedef struct TreeNode
 {
     int data;
     struct TreeNode *left,*right;
+    TreeNode(int x) : data(x), left(NULL), right(NULL) {}
 } TreeNode,*TreePtr;
 
 class DepthOfTree {
@@ -728,8 +729,8 @@ public:
             return NULL;
         }
 
-        // TreeNode* root = new TreeNode(postorder[e1]);
-        TreeNode* root = (TreePtr)malloc(sizeof(TreeNode));
+        TreeNode* root = new TreeNode(postorder[e1]);
+        // TreeNode* root = (TreePtr)malloc(sizeof(TreeNode));
         root->data = postorder[e1];
 
         int mid = m[postorder[e1]];
@@ -767,6 +768,44 @@ public:
             }
 
             return;
+    }
+};
+
+
+class TreeSolution {
+public:
+/* for this question, we need to construct the ret vector first
+   thus, we need to know the depth of this tree, we write a simple
+   function to calculate the height of this tree */
+    vector<vector<int> > levelOrder(TreeNode *root) {
+       int depth = getHeight(root);
+       vector<vector<int>> ret(depth);
+       if(depth == 0) //invalid check
+            return ret;
+        getSolution(ret,root,0);
+        return ret;
+    }
+
+    void getSolution(vector<vector<int>>& ret, TreeNode* root, int level)
+    {
+        if(root == NULL)
+            return;
+        ret[level].push_back(root->data);
+
+        // cout << "level: " << level << "root data:" << root->data << endl;
+        getSolution(ret,root->left,level+1);
+        getSolution(ret,root->right,level+1);
+    }
+
+    int getHeight(TreeNode* root)
+    {
+        if(root == NULL)
+            return 0;
+        int left = getHeight(root->left);
+        int right = getHeight(root->right);
+        int height = (left > right?left:right)+1;
+
+        return height;
     }
 };
 
@@ -820,7 +859,17 @@ int main(){
     vector<int> v1 = {4,2,5,1,6,3,7};
     vector<int> v2 = {4,5,2,6,7,3,1};
     TreeNode* node_n0 = bt.buildTree(v1 ,v2);
-   
+
     new TravelTree(node_n0);
+
+    TreeSolution ts;
+    vector<vector<int> > tmp_val = ts.levelOrder(node_n0);
+    for(int i=0;i<tmp_val.size();i++){
+
+        for(int j=0;j<tmp_val[i].size();j++){
+            cout << "tree i:" << i << "val:" << tmp_val[i][j] << endl;
+        }
+    }
+    
     return 0;
 }
