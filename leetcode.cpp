@@ -774,7 +774,9 @@ public:
 
 class TreeSolution {
 public:
-/* for this question, we need to construct the ret vector first
+    vector<vector<int> > zigzag_vals;
+
+    /* for this question, we need to construct the ret vector first
    thus, we need to know the depth of this tree, we write a simple
    function to calculate the height of this tree */
     vector<vector<int> > levelOrder(TreeNode *root) {
@@ -824,6 +826,37 @@ public:
         ret[level].push_back(root->val);
         DFS(ret,level-1,root->left);
         DFS(ret,level-1,root->right);
+    }
+
+    vector<vector<int> > zigzagLevelOrder(TreeNode *root) {
+        build(root, 1);
+
+        //翻转
+        for(int i = 1; i < zigzag_vals.size(); i+=2) {
+            reverse(zigzag_vals[i].begin(), zigzag_vals[i].end());
+        }
+
+        return zigzag_vals;
+    }
+
+    void build(TreeNode* node, int level) {
+        if(!node) {
+            return;
+        }
+
+        if(zigzag_vals.size() <= level - 1) {
+            zigzag_vals.push_back(vector<int>());
+        }
+
+        zigzag_vals[level - 1].push_back(node->val);
+
+        if(node->left) {
+            build(node->left, level + 1);
+        }
+
+        if(node->right) {
+            build(node->right, level + 1);
+        }
     }
 };
 
