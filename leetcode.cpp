@@ -1086,6 +1086,98 @@ public:
     }
 };
 
+
+typedef struct TreeLinkNode {
+      TreeLinkNode *left;
+      TreeLinkNode *right;
+      TreeLinkNode *next;
+} TreeLinkNode,*TreeLinkNodePtr;
+
+class TreeNextPointerSolution {
+public:
+    void connect(TreeLinkNode *root) {
+        if(!root) {
+            return;
+        }
+
+        TreeLinkNode* p = root;
+        TreeLinkNode* first = NULL;
+        while(p) {
+            //记录下层第一个左子树
+            if(!first) {
+                first = p->left;
+            }
+            //如果有左子树，那么next就是父节点
+            if(p->left) {
+                p->left->next = p->right;
+            } else {
+                //叶子节点了，遍历结束
+                break;
+            }
+
+            //如果有next，那么设置右子树的next
+            if(p->next) {
+                p->right->next = p->next->left;
+                p = p->next;
+                continue;
+            } else {
+                //转到下一层
+                p = first;
+                first = NULL;
+            }
+        }
+    }
+
+    void connectNew(TreeLinkNode *root) {
+        if(!root) {
+            return;
+        }
+
+        TreeLinkNode* p = root;
+        TreeLinkNode* first = NULL;
+        TreeLinkNode* last = NULL;
+
+        while(p) {
+            //设置下层第一个元素
+            if(!first) {
+                if(p->left) {
+                    first = p->left;
+                } else if(p->right) {
+                    first = p->right;
+                }
+            }
+
+            if(p->left) {
+                //如果有last，则设置last的next
+                if(last) {
+                    last->next = p->left;
+                }
+                //last为left
+                last = p->left;
+            }
+
+            if(p->right) {
+                //如果有last，则设置last的next
+                if(last) {
+                    last->next = p->right;
+                }
+                //last为right
+                last = p->right;
+            }
+
+            //如果有next，则转到next
+            if(p->next) {
+                p = p->next;
+            } else {
+                //转到下一层
+                p = first;
+                last = NULL;
+                first = NULL;
+            }
+        }
+    }
+};
+
 int main(){
 
     Solution s;
