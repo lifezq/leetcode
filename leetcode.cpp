@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <map>
 #include <algorithm>
+#include <queue>
 
 
 using namespace std;
@@ -636,9 +637,9 @@ class Solution{
 
 typedef struct TreeNode
 {
-    int data;
+    int val;
     struct TreeNode *left,*right;
-    TreeNode(int x) : data(x), left(NULL), right(NULL) {}
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 } TreeNode,*TreePtr;
 
 class DepthOfTree {
@@ -731,7 +732,7 @@ public:
 
         TreeNode* root = new TreeNode(postorder[e1]);
         // TreeNode* root = (TreePtr)malloc(sizeof(TreeNode));
-        root->data = postorder[e1];
+        root->val = postorder[e1];
 
         int mid = m[postorder[e1]];
         int num = mid - s0;
@@ -756,14 +757,14 @@ public:
             }
             
             if(n->left){
-                cout << "travel node:" << n->data << endl;
-                cout << "travel left node:" << n->left->data << endl;
+                cout << "travel node:" << n->val << endl;
+                cout << "travel left node:" << n->left->val << endl;
                 travel(n->left);
             }
 
             if(n->right){
-                cout << "travel node:" << n->data << endl;
-                cout << "travel right node:" << n->right->data << endl;
+                cout << "travel node:" << n->val << endl;
+                cout << "travel right node:" << n->right->val << endl;
                 travel(n->right);
             }
 
@@ -792,9 +793,9 @@ public:
     {
         if(root == NULL)
             return;
-        ret[level].push_back(root->data);
+        ret[level].push_back(root->val);
 
-        // cout << "level: " << level << "root data:" << root->data << endl;
+        // cout << "level: " << level << "root data:" << root->val << endl;
         getSolution(ret,root->left,level+1);
         getSolution(ret,root->right,level+1);
     }
@@ -860,6 +861,231 @@ public:
     }
 };
 
+class TreeSymmetricSolution {
+public:
+    bool isSymmetric(TreeNode *root) {
+        if(root == NULL)
+            return true;
+        return Helper(root->left,root->right);
+    }
+
+    bool Helper(TreeNode* left, TreeNode* right)
+    {
+        if(left == NULL&&right == NULL)
+            return true;
+        else if(left == NULL||right == NULL)
+            return false;
+        bool cond1 = left->val == right->val;
+        bool cond2 = Helper(left->left,right->right);
+        bool cond3 = Helper(left->right, right->left);
+        return cond1&&cond2&&cond3;
+    }
+
+    bool isSymmetricLoop(TreeNode *root) {
+       if(root == NULL)
+            return true;
+        TreeNode* n1 = root->left;
+        TreeNode* n2 = root->right;
+        if(!n1&&!n2)
+            return true;
+        if((!n1&&n2)||(n1&&!n2))
+            return false;
+        queue<TreeNode*> Q1;
+        queue<TreeNode*> Q2;
+        Q1.push(n1);
+        Q2.push(n2);
+        while(!Q1.empty() && !Q2.empty())
+        {
+            TreeNode* tmp1 = Q1.front();
+            TreeNode* tmp2 = Q2.front();
+            Q1.pop();
+            Q2.pop();
+            if((!tmp1&&tmp2) || (tmp1&&!tmp2))
+                return false;
+            if(tmp1&&tmp2)
+            {
+                if(tmp1->val != tmp2->val)
+                    return false;
+                Q1.push(tmp1->left);
+                Q1.push(tmp1->right); //note: this line we should put the mirror sequence in two queues
+                Q2.push(tmp2->right);
+                Q2.push(tmp2->left);
+            }
+        }
+        return true;
+    }
+
+     bool isSameTree(TreeNode *p, TreeNode *q) {
+        if(p == NULL && q == NULL)
+            return true;
+        else if(p == NULL || q == NULL)
+            return false;
+        if(p->val == q->val)
+        {
+            bool left = isSameTree(p->left, q->left);
+            bool right = isSameTree(p->right,q->right);
+            return left&&right;
+        }
+        return false;
+    }
+};
+
+class TreeIsBalancedSolution {
+public:
+    bool isBalanced(TreeNode *root) {
+        //corner case check
+        if(root == NULL)
+            return true;
+        int isBalanced = getHeight(root);
+        if(isBalanced != -1)
+            return true;
+        else
+            return false;
+    }
+
+    int getHeight(TreeNode* root)
+    {
+        if(root == NULL)
+            return 0;
+        int leftHeight = getHeight(root->left);
+        if(leftHeight == -1)
+            return -1;
+        int rightHeight = getHeight(root->right);
+        if(rightHeight == -1)
+            return -1;
+        int diffHeight = rightHeight > leftHeight? rightHeight-leftHeight:leftHeight-rightHeight;
+        if(diffHeight > 1)
+            return -1;
+        else
+            return diffHeight = (rightHeight>leftHeight?rightHeight:leftHeight)+1;
+    }
+};
+
+class TreePathSolution {
+public:
+    bool hasPathSum(TreeNode *root, int sum) {
+        if(root == NULL)
+            return false;
+        return DFS(sum, 0, root);
+    }
+
+    bool DFS(int target, int sum, TreeNode* root)
+    {
+        if(root == NULL)
+            return false;
+        sum += root->val;
+        if(root->left == NULL && root->right == NULL)
+        {
+            if(sum == target)
+                return true;
+            else
+                return false;
+        }
+        bool leftPart = DFS(target, sum, root->left);
+        bool rightPart = DFS(target, sum, root->right);
+        return leftPart||rightPart;
+    }
+
+};
+
+class TreeOrderTraversalSolution {
+public:
+    vector<int> preorderTraversal(TreeNode *root) {
+        vector<int> vals;
+        if(root == NULL) {
+            return vals;
+        }
+
+        vector<TreeNode*> nodes;
+
+        //首先将root压栈
+        nodes.push_back(root);
+
+        while(!nodes.empty()) {
+            TreeNode* n = nodes.back();
+            vals.push_back(n->val);
+
+            //访问了该节点，出栈
+            nodes.pop_back();
+
+            //如果有右子树，压栈保存
+            if(n->right) {
+                nodes.push_back(n->right);
+            }
+
+            //如果有左子树，压栈保存
+            if(n->left) {
+                nodes.push_back(n->left);
+            }
+        }
+
+        return vals;
+    }
+
+    vector<int> inorderTraversal(TreeNode *root) {
+        vector<int> vals;
+        if(root == NULL) {
+            return vals;
+        }
+
+        vector<TreeNode*> nodes;
+        TreeNode* p = root;
+        while(p || !nodes.empty()) {
+            //这里一直遍历左子树，将根节点压栈
+            while(p) {
+                nodes.push_back(p);
+                p = p->left;
+            }
+
+            if(!nodes.empty()) {
+                p = nodes.back();
+                vals.push_back(p->val);
+
+                //将根节点弹出，获取右子树
+                nodes.pop_back();
+                p = p->right;
+            }
+        }
+
+        return vals;
+    }
+
+    vector<int> postorderTraversal(TreeNode *root) {
+        vector<int> vals;
+        if(root == NULL) {
+            return vals;
+        }
+
+        vector<TreeNode*> nodes;
+        TreeNode* pre = NULL;
+
+        nodes.push_back(root);
+
+        while(!nodes.empty()) {
+            TreeNode* p = nodes.back();
+            //如果不判断pre，我们就没法正确地出栈了
+            if((p->left == NULL && p->right == NULL) ||
+                (pre != NULL && (pre == p->left || pre == p->right))) {
+                vals.push_back(p->val);
+                nodes.pop_back();
+                pre = p;
+            } else {
+                //右子树压栈
+                if(p->right != NULL) {
+                    nodes.push_back(p->right);
+                }
+
+                //左子树压栈
+                if(p->left != NULL) {
+                    nodes.push_back(p->left);
+                }
+            }
+        }
+
+        return vals;
+    }
+};
+
 int main(){
 
     Solution s;
@@ -896,11 +1122,11 @@ int main(){
     DepthOfTree st;
     TreePtr node;
     node = (TreePtr)malloc(sizeof(TreeNode));
-    node->data = 0;
+    node->val = 0;
     node->left = (TreePtr)malloc(sizeof(TreeNode));
-    node->left->data = 1;
+    node->left->val = 1;
     node->right = (TreePtr)malloc(sizeof(TreeNode));
-    node->right->data = 2;
+    node->right->val = 2;
 
     new TravelTree(node);
 
@@ -912,6 +1138,13 @@ int main(){
     TreeNode* node_n0 = bt.buildTree(v1 ,v2);
 
     new TravelTree(node_n0);
+
+    TreeOrderTraversalSolution tot;
+    vector<int> vals = tot.preorderTraversal(node_n0);
+    for(short i=0;i<vals.size();i++) cout<<"Preorder tree:"<<vals[i]<<endl;
+        
+    vals = tot.inorderTraversal(node_n0);
+    for(short i=0;i<vals.size();i++) cout<<"Inorder tree:"<<vals[i]<<endl;
 
     TreeSolution ts;
     vector<vector<int> > tmp_val = ts.levelOrder(node_n0);
