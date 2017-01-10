@@ -1178,6 +1178,50 @@ public:
     }
 };
 
+typedef struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x):val(x),next(NULL) {}
+} ListNode, *ListNodePtr;
+
+class ConvertSortedListToBinaryTree {
+    public:
+
+        TreeNode *sortedListToBST(ListNode *head) {
+                return build(head, NULL);
+        }
+
+        TreeNode* build(ListNode* start, ListNode* end) {
+            if(start == end){
+                return NULL;
+            }
+
+            ListNode* fast = start;
+            ListNode* slow = start;
+
+            while(fast != end && fast->next != end){
+                slow = slow->next;
+                fast = fast->next->next;
+            }
+
+            TreeNode* node = new TreeNode(slow->val);
+            node->left = build(start, slow);
+            node->right = build(slow->next, end);
+
+            return node;
+        }
+
+        ListNode* buildListNode(ListNode* ln, int end) {
+            
+            if(ln->val < end){
+                ln->next = new ListNode(ln->val + 1);
+                buildListNode(ln->next, end);
+            }
+
+            return ln;
+        }
+};
+
 int main(){
 
     Solution s;
@@ -1247,5 +1291,11 @@ int main(){
         }
     }
     
+    ConvertSortedListToBinaryTree csltbt;
+    ListNode* ln = csltbt.buildListNode(new ListNode(100),110);
+    TreeNode* tempnode = csltbt.sortedListToBST(ln);
+    new TravelTree(tempnode);
+
     return 0;
 }
+
