@@ -986,6 +986,32 @@ public:
         return leftPart||rightPart;
     }
 
+    vector<vector<int>> pathSum(TreeNode *root, int sum) {
+        vector<vector<int>> ret;
+        if(root == NULL)
+            return ret;
+        vector<int> curr;
+        DFS(ret, curr, sum, 0, root);
+        return ret;
+    }
+
+    void DFS(vector<vector<int>>& ret, vector<int> curr, int sum, int tmpsum, TreeNode* root){
+        if(root == NULL)
+            return;
+
+        tmpsum+=root->val;
+        curr.push_back(root->val);
+        if(tmpsum == sum){
+            if(root->left == NULL && root->right ==NULL){
+                ret.push_back(curr);
+                return;
+            }
+        }
+
+        DFS(ret, curr, sum, tmpsum, root->left);
+        DFS(ret, curr, sum, tmpsum, root->right);
+    }
+
 };
 
 class TreeOrderTraversalSolution {
