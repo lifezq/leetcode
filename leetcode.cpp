@@ -1248,6 +1248,61 @@ class ConvertSortedListToBinaryTree {
         }
 };
 
+class FlattenBinaryTreeToLinked {
+    public:
+        void flatten(TreeNode *root){
+
+            if(!root)   return;
+
+            vector<TreeNode*> ns;
+            TreeNode dummy(0);
+
+            TreeNode* n = &dummy;
+
+            ns.push_back(root);
+
+            while(!ns.empty()){
+                TreeNode* p = ns.back();
+                ns.pop_back();
+
+                // 挂载到右子树
+                n->right = p;
+                n = p;
+
+                // 右子树压栈
+                if(p->right){
+                    ns.push_back(p->right);
+                    p->right = NULL;
+                }
+
+                // 左子树压栈
+                if(p->left){
+                    ns.push_back(p->left);
+                    p->left = NULL;
+                }
+            }
+
+            return;
+        }
+};
+
+class ValidateBinarySearchTree {
+    public:
+        bool isValidBST(TreeNode *root){
+            return valid(root, numeric_limits<int>::min(), numeric_limits<int>::max());
+        }
+
+        bool valid(TreeNode* node, int minVal, int maxVal){
+            if(!node) return true;
+
+            if(node->val <= minVal || node->val >= maxVal){
+                return false;
+            }
+
+            return valid(node->left, minVal, node->val) && valid(node->right, node->val, maxVal);
+        }
+};
+
 int main(){
 
     Solution s;
@@ -1322,6 +1377,12 @@ int main(){
     TreeNode* tempnode = csltbt.sortedListToBST(ln);
     new TravelTree(tempnode);
 
+    FlattenBinaryTreeToLinked fbttl;
+    fbttl.flatten(tempnode);
+
+    ValidateBinarySearchTree vbt;
+    bool isok = vbt.isValidBST(tempnode);
+    cout << "Is valid binary search tree:" << isok << endl; 
     return 0;
 }
 
