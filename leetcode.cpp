@@ -6,6 +6,7 @@
 #include <map>
 #include <algorithm>
 #include <queue>
+#include <sstream>
 
 
 using namespace std;
@@ -1385,6 +1386,53 @@ class RecoverBinarySearchTree {
         }
 };
 
+class BinaryTreePath {
+    public:
+        vector<string> binaryTreePaths(TreeNode* root){
+            vector<string> result;
+            if(root == nullptr) return result;
+            vector<int> path;
+            bfs(root, path, result);
+            return result;
+        }
+
+    private:
+        //递归函数，深度优先搜索
+        void bfs(TreeNode* node, vector<int>& path, vector<string>& result){
+
+            if(node == nullptr) return;
+
+            path.push_back(node->val);
+
+            if(node->left == nullptr && node->right == nullptr){
+
+                result.push_back(generatePath(path));
+            }else{
+
+
+                if(node->left != nullptr){
+                    bfs(node->left, path, result);
+                    path.pop_back();
+                }
+
+                if(node->right != nullptr){
+                    bfs(node->right, path, result);
+                     path.pop_back();
+                }
+            }
+        }
+
+        // 辅助函数， 用于生成路径字符串
+        string generatePath(vector<int> path){
+
+            stringstream ss;
+            int i;
+            for(i=0; i<path.size()-i;i++) ss << path[i] << "->";
+            ss << path[i];
+            return ss.str();
+        }
+};
+
 int main(){
 
     Solution s;
@@ -1465,6 +1513,11 @@ int main(){
     ValidateBinarySearchTree vbt;
     bool isok = vbt.isValidBST(tempnode);
     cout << "Is valid binary search tree:" << isok << endl; 
+
+    BinaryTreePath btp;
+    vector<string> ss = btp.binaryTreePaths(tempnode);
+    for(int i = 0; i<=ss.size()-1; i++) cout << "path:" << ss[i] << endl;
+
     return 0;
 }
 
