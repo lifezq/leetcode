@@ -769,18 +769,22 @@ public:
                 return;
             }
             
+            cout << "travel node:" << n->val << endl;
             if(n->left){
-                cout << "travel node:" << n->val << endl;
                 cout << "travel left node:" << n->left->val << endl;
+            }
+
+            if(n->right){
+                cout << "travel right node:" << n->right->val << endl;
+            }
+
+            if(n->left){
                 travel(n->left);
             }
 
             if(n->right){
-                cout << "travel node:" << n->val << endl;
-                cout << "travel right node:" << n->right->val << endl;
                 travel(n->right);
             }
-
             return;
     }
 };
@@ -1433,6 +1437,38 @@ class BinaryTreePath {
         }
 };
 
+void CreateBiTree(TreeNode* &root, char v, int lr){
+    char ch;
+
+
+    // ch = getchar();
+    if(lr == 0){
+        printf("父节点:%c 请输入左节点值:\n", v);
+    }else if(lr == 1){
+        printf("父节点:%c 请输入右节点值:\n", v);
+    }else{
+        cout << "请输入根节点值:" << endl;
+    }
+
+
+    scanf("%c", &ch);
+    cout << "ch:" << ch << endl;
+
+    getchar();
+
+    if(ch == '\n'){
+        return;
+    }
+
+    if(ch == '0'){
+        root = NULL;
+    }else {
+        root = new TreeNode(ch);
+        CreateBiTree(root->left, ch, 0);
+        CreateBiTree(root->right, ch, 1);
+    }
+}
+
 int main(){
 
     Solution s;
@@ -1518,6 +1554,9 @@ int main(){
     vector<string> ss = btp.binaryTreePaths(tempnode);
     for(int i = 0; i<=ss.size()-1; i++) cout << "path:" << ss[i] << endl;
 
+    TreeNode* n;
+    CreateBiTree(n, 0, -1);
+    new TravelTree(n);
     return 0;
 }
 
