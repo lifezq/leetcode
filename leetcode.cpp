@@ -1469,6 +1469,36 @@ void CreateBiTree(TreeNode* &root, char v, int lr){
     }
 }
 
+class SumRootToLeafNumbers {
+    public:
+        int sumNumbers(TreeNode* root){
+            vector<int> arr;
+            int sum = 0;
+            dfs(root, arr, sum);
+            return sum;
+        }
+
+        int vec2sum(vector<int>& vec){
+            int num = 0;
+            for(auto n : vec) {
+                num = num * 10 + n;
+            }
+            return num;
+        }
+
+        void dfs(TreeNode* node, vector<int>& arr, int& sum){
+            if(node == nullptr) return;
+            arr.push_back(node->val);
+            if(node->left == nullptr && node->right == nullptr){
+                sum += vec2sum(arr);
+            }else{
+                if(node->left != nullptr) dfs(node->left, arr, sum);
+                if(node->right != nullptr) dfs(node->right, arr, sum);
+            }
+            arr.pop_back();
+        }
+};
+
 int main(){
 
     Solution s;
@@ -1557,6 +1587,9 @@ int main(){
     TreeNode* n;
     CreateBiTree(n, 0, -1);
     new TravelTree(n);
+
+    SumRootToLeafNumbers srtln;
+    cout << "Sum root to leaf numbers:" << srtln.sumNumbers(n) << endl;
     return 0;
 }
 
