@@ -1499,6 +1499,106 @@ class SumRootToLeafNumbers {
         }
 };
 
+class DynamicProgramming {
+    public:
+        // max profit
+        int maxProfit(vector<int> &prices){
+            if(prices.size() <= 1) {
+                return 0;
+            }
+            
+            int minP = prices[0];
+
+            int profit = prices[1] - prices[0];
+
+            for(int i = 2; i < prices.size(); i++){
+                minP = min(prices[i-1], minP);
+                profit = max(profit, prices[i] - minP);
+            }
+
+            if(profit < 0){
+                return 0;
+            }
+
+            return profit;
+        }
+
+        // unique path 
+        int uniquePaths(int m, int n){
+            int dp[m][n];
+            // 初始化dp, m x 1情况全为1
+            for(int i = 0; i< m; i++){
+                dp[i][0] = 1;
+            }
+
+            // 初始化dp, 1 x n情况全为1
+            for(int j = 0; j < n; j++){
+                dp[0][j] = 1;
+            }
+
+            for(int i = 1; i < m; i++){
+                for(int j = 1; j < n; j++){
+                    dp[i][j] = dp[i-1][j] + dp[i][j-1];
+                }
+            }
+
+            return dp[m-1][n-1];
+        }
+
+        int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid){
+
+            if(obstacleGrid.empty() || obstacleGrid[0].empty()) {
+                return 0;
+            }
+
+            int m = obstacleGrid.size();
+            int n = obstacleGrid[0].size();
+
+            int dp[m][n];
+
+            //下面初始dp的时候需要根据obstacleGrid的值来确定
+            dp[0][0] = (obstacleGrid[0][0] == 0 ? 1 : 0);
+
+            //我们需要注意m x 1以及1 x n的初始化
+            for(int i = 1; i < m; i++) {
+                dp[i][0] = ((dp[i - 1][0] == 1 && obstacleGrid[i][0] == 0) ? 1 : 0);
+            }
+
+            for(int j = 1; j < n; j++) {
+                dp[0][j] = ((dp[0][j - 1] == 1 && obstacleGrid[0][j] == 0) ? 1 : 0);
+            }
+
+
+            for(int i = 1; i < m; i++) {
+                for(int j = 1; j < n; j++) {
+                    if(obstacleGrid[i][j] == 1) {
+                        dp[i][j] = 0;
+                    } else {
+                        dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                    }
+                }
+            }
+
+            return dp[m - 1][n - 1];
+        }
+
+        int numSquares(int n){
+
+            vector<int> dp(n + 1, INT_MAX);
+
+            dp[0] = 0;
+
+            for(int i = 0; i <=n; i++){
+                for(int j = 1; i + j * j <= n; j++){
+
+                    dp[i + j * j] = min(dp[i + j * j], dp[i] + 1);
+                }
+            }
+
+            return dp[n];
+        }
+};
+
 int main(){
 
     Solution s;
@@ -1590,6 +1690,11 @@ int main(){
 
     SumRootToLeafNumbers srtln;
     cout << "Sum root to leaf numbers:" << srtln.sumNumbers(n) << endl;
+
+    //DynamicProgramming dp;
+    //for(int n = 0; n < 100; n++){
+    //   cout << "n:" << n << " square val:" << dp.numSquares(n) << endl;
+    //}
     return 0;
 }
 
