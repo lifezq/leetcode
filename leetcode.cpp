@@ -1599,6 +1599,97 @@ class DynamicProgramming {
         }
 };
 
+class Backtracking {
+    public:
+        vector<vector<int>> res;
+
+        // Combination
+        vector<vector<int>> combine(int n, int k){
+            vector<vector<int>> ret;
+            if(n <= 0) return ret; // corner case invalid check 
+
+            vector<int> curr;
+            DFS(ret, curr, n, k, 1);
+            return ret;
+        }
+
+        void DFS(vector<vector<int>>& ret, vector<int> curr, int n, int k, int level){
+            if(curr.size() == k){
+                ret.push_back(curr);
+                return;
+            }
+
+            if(curr.size() > k) return; // consider this check to save run time 
+
+            for(int i = level; i <= n; ++i){
+                curr.push_back(i);
+                DFS(ret, curr, n, k, i+1);
+                curr.pop_back();
+            }
+        }
+
+        // Subsets
+        vector<vector<int>> subsets(vector<int> &S){
+            if(S.empty()){
+                return res;
+            }
+
+            sort(S.begin(),S.end());
+
+            res.push_back(vector<int>());
+
+            vector<int> v;
+
+            generate(0, v, S);
+
+            return res;
+        }
+
+        void generate(int start, vector<int>& v, vector<int> &S){
+            if(start == S.size()){
+                return;
+            }
+
+            for(int i = start; i < S.size(); i++){
+                v.push_back(S[i]);
+
+                res.push_back(v);
+
+                generate(i+1, v, S);
+
+                v.pop_back();
+            }
+        }
+
+        // Permutation 
+        vector<vector<int>> permute(vector<int> &num){
+            vector<vector<int>> permutations;
+            if(num.size() == 0) return permutations; // invalid corner case check 
+
+            vector<int> curr;
+            vector<bool> isVisited(num.size(), false); // using this bool type array to check whether or not elements has been visited
+            backTracking(permutations, curr, isVisited, num);
+            return permutations;
+        }
+
+        void backTracking(vector<vector<int>>& ret, vector<int> curr, vector<bool> isVisited, vector<int> num){
+            if(curr.size() == num.size()){
+                ret.push_back(curr);
+                return;
+            }
+
+            for(int i = 0; i < num.size(); i++){
+                if(isVisited[i] == false){
+                    isVisited[i] = true;
+                    curr.push_back(num[i]);
+                    backTracking(ret, curr, isVisited, num);
+                    isVisited[i] = false;
+                    curr.pop_back();
+                }
+            }
+        }
+};
+
 int main(){
 
     Solution s;
@@ -1684,17 +1775,34 @@ int main(){
     vector<string> ss = btp.binaryTreePaths(tempnode);
     for(int i = 0; i<=ss.size()-1; i++) cout << "path:" << ss[i] << endl;
 
-    TreeNode* n;
-    CreateBiTree(n, 0, -1);
-    new TravelTree(n);
+    // TreeNode* n;
+    // CreateBiTree(n, 0, -1);
+    // new TravelTree(n);
 
-    SumRootToLeafNumbers srtln;
-    cout << "Sum root to leaf numbers:" << srtln.sumNumbers(n) << endl;
+    // SumRootToLeafNumbers srtln;
+    // cout << "Sum root to leaf numbers:" << srtln.sumNumbers(n) << endl;
 
     //DynamicProgramming dp;
     //for(int n = 0; n < 100; n++){
     //   cout << "n:" << n << " square val:" << dp.numSquares(n) << endl;
-    //}
+    //} 
+
+    // Subsets 
+    Backtracking btk;
+    vector<int> temp_v;
+    for(int i = 1; i<=3; i++){
+        temp_v.push_back(i);
+    }
+
+    vector<vector<int>> vv = btk.subsets(temp_v);
+    for(int i = 0; i < vv.size(); i++){
+        cout << "vv#001:" << i << " elems: ";
+        for(int j = 0; j < vv[i].size(); j++){
+            cout << " " << vv[i][j];
+        }
+
+        cout << endl;
+    }
     return 0;
 }
 
