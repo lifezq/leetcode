@@ -73,6 +73,13 @@ class P_4_MedianOfTwoSortedArrays {
         int[] arr1 = {1, 2};
         int[] arr2 = {3, 4};
         solution.findMedianSortedArrays(arr1, arr2);
+
+        int[] arr3 = {44, 342, 546, 76, 457, 8, 89, 89, 6, 655, 4};
+        solution.quickSort(arr3, 0, arr3.length - 1);
+        for (int i : arr3) {
+            System.out.printf("-" + i);
+        }
+
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -114,19 +121,33 @@ class P_4_MedianOfTwoSortedArrays {
             return ret;
         }
 
-        public void quickSort(int[] arr, int i, int j) {
-            if (i >= j || i < 0 || j >= arr.length) {
+        public void quickSort(int[] arr, int low, int high) {
+            if (low >= high) {
                 return;
             }
 
-            int prove = arr[i];
+            int i = low, j = high;
+            int pivot = arr[i];
             while (i < j) {
-                while (i < j && arr[i] < prove) {
-                    i++;
+                while (i < j && arr[j] >= pivot) {
+                    j--;
+                }
+                if (i < j) {
+                    arr[i++] = arr[j];
                 }
 
+                while (i < j && arr[i] <= pivot) {
+                    i++;
+                }
+                if (i < j) {
+                    arr[j--] = arr[i];
+                }
             }
-            return;
+
+            arr[i] = pivot;
+
+            quickSort(arr, low, i - 1);
+            quickSort(arr, i + 1, high);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
