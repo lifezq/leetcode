@@ -113,6 +113,21 @@ class P_4_MedianOfTwoSortedArrays {
 
             return ret;
         }
+
+        public void quickSort(int[] arr, int i, int j) {
+            if (i >= j || i < 0 || j >= arr.length) {
+                return;
+            }
+
+            int prove = arr[i];
+            while (i < j) {
+                while (i < j && arr[i] < prove) {
+                    i++;
+                }
+
+            }
+            return;
+        }
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
