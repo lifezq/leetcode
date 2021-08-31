@@ -105,7 +105,7 @@ class P_13_RomanToInteger {
                 symbol = romanStrings[i];
                 while (s.indexOf(symbol) == 0) {
                     ret += value;
-                    s = s.replaceFirst(symbol, "");
+                    s = s.substring(symbol.length());
                 }
             }
             return ret;
