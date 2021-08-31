@@ -115,7 +115,7 @@ package editor.cn;
 //leetcode submit region begin(Prohibit modification and deletion)
 class Solution8 {
     public static int myAtoi(String s) {
-        int num = 0, val = 0, base = 1, sign = 1;
+        long num = 0, val = 0, base = 1, sign = 1;
 
         if (s.charAt(0) == '-') {
             sign = -1;
@@ -129,10 +129,18 @@ class Solution8 {
             if (num < 0 || num > 9) {
                 return 0;
             }
+
+            if (sign == 1 && (val + num * base) > Integer.MAX_VALUE) {
+                return Integer.MAX_VALUE;
+            } else if (sign == -1 && -(val + num * base) < Integer.MIN_VALUE) {
+                return Integer.MIN_VALUE;
+            }
+
             val += num * base;
             base *= 10;
         }
-        return sign * val;
+
+        return (int) (sign * val);
     }
 
     public static void main(String[] args) {
