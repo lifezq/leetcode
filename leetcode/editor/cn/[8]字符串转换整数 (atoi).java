@@ -140,7 +140,8 @@ class Solution8 {
             base *= 10;
         }
 
-        return (int) (sign * val);
+
+        return Long.valueOf(sign * val).intValue();
     }
 
     public static void main(String[] args) {
