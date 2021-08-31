@@ -50,6 +50,7 @@ package editor.cn;
 
 
 class P_2_AddTwoNumbers {
+
     public static void main(String[] args) {
         Solution solution = new P_2_AddTwoNumbers().new Solution();
         Solution.ListNode l1 = solution.newListNode(2);
