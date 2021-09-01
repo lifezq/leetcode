@@ -53,11 +53,11 @@ class P_22_GenerateParentheses {
     class Solution {
         public List<String> generateParenthesis(int n) {
             List<String> ret = new ArrayList<>();
-            backTrace(ret, new StringBuilder(), 0, 0, n);
+            backTrack(ret, new StringBuilder(), 0, 0, n);
             return ret;
         }
 
-        public void backTrace(List<String> ret, StringBuilder cur, int open, int close, int max) {
+        public void backTrack(List<String> ret, StringBuilder cur, int open, int close, int max) {
             if (cur.length() == max * 2) {
                 if (valid(cur.toString().toCharArray())) {
                     ret.add(cur.toString());
@@ -67,13 +67,13 @@ class P_22_GenerateParentheses {
 
             if (open < max) {
                 cur.append("(");
-                backTrace(ret, cur, open + 1, close, max);
+                backTrack(ret, cur, open + 1, close, max);
                 cur.deleteCharAt(cur.length() - 1);
             }
 
             if (close < max) {
                 cur.append(")");
-                backTrace(ret, cur, open, close + 1, max);
+                backTrack(ret, cur, open, close + 1, max);
                 cur.deleteCharAt(cur.length() - 1);
             }
         }
