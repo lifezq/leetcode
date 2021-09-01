@@ -57,9 +57,18 @@ class P_24_SwapNodesInPairs {
         l0.next.next = solution.newListNode(3);
         l0.next.next.next = solution.newListNode(4);
         Solution.ListNode ret = solution.swapPairs(l0);
-        while (ret != null) {
-            System.out.printf("%d->", ret.val);
-            ret = ret.next;
+        Solution.ListNode l1 = ret;
+        while (l1 != null) {
+            System.out.printf("%d->", l1.val);
+            l1 = l1.next;
+        }
+
+        System.out.println(" ");
+
+        Solution.ListNode l2 = solution.reverse(ret);
+        while (l2 != null) {
+            System.out.printf("%d->", l2.val);
+            l2 = l2.next;
         }
     }
 
@@ -86,6 +95,18 @@ class P_24_SwapNodesInPairs {
                 head = head.next.next;
             }
             return node;
+        }
+
+        public ListNode reverse(ListNode head) {
+            ListNode newHead = null;
+            ListNode temp = null;
+            while (head != null) {
+                temp = head.next;
+                head.next = newHead;
+                newHead = head;
+                head = temp;
+            }
+            return newHead;
         }
 
         public ListNode newListNode(int val) {
