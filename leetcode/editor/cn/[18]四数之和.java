@@ -1,7 +1,9 @@
 package editor.cn;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 题目Id：18;
@@ -54,6 +56,16 @@ class P_18_FourSum {
         Solution solution = new P_18_FourSum().new Solution();
         int[] nums = {1, 0, -1, 0, -2, 2};
         List<List<Integer>> ret = solution.fourSum(nums, 0);
+        for (List<Integer> integers : ret) {
+            integers.forEach(x -> {
+                System.out.printf("%d,", x);
+            });
+            System.out.println(" ");
+        }
+
+        System.out.println("------------");
+
+        ret = solution.fourSum2(nums, 0);
         for (List<Integer> integers : ret) {
             integers.forEach(x -> {
                 System.out.printf("%d,", x);
@@ -113,6 +125,78 @@ class P_18_FourSum {
             }
 
             return ret;
+        }
+
+        public List<List<Integer>> fourSum2(int[] nums, int target) {
+            if (nums.length < 4) {
+                return null;
+            }
+
+            List<List<Integer>> ans = new ArrayList<>();
+            List<Integer> combine = new ArrayList<>();
+            backTrack(nums, ans, combine, target, 0);
+            return ans;
+        }
+
+        public void backTrack(int[] nums, List<List<Integer>> ans, List<Integer> combine, int target, int idx) {
+            if (idx >= nums.length) {
+                return;
+            }
+
+            if (combine.stream().mapToInt(x -> x).sum() == target && combine.size() == 4) {
+                boolean found = false;
+                for (List<Integer> an : ans) {
+                    if (an.contains(combine.get(0)) && an.contains(combine.get(1)) &&
+                            an.contains(combine.get(2)) && an.contains(combine.get(3))) {
+                        found = true;
+                    }
+                }
+
+                if (!found) {
+                    boolean ok = true;
+                    if (combine.stream().distinct().count() != 4) {
+                        Map<String, Integer> set = valueRepeatCount(combine);
+                        List<Integer> numList = new ArrayList<>();
+                        for (int num : nums) {
+                            numList.add(num);
+                        }
+                        Map<String, Integer> sourceSet = valueRepeatCount(numList);
+                        for (Map.Entry<String, Integer> stringIntegerEntry : set.entrySet()) {
+                            if (!sourceSet.get(stringIntegerEntry.getKey()).equals(stringIntegerEntry.getValue())) {
+                                ok = false;
+                            }
+                        }
+                    }
+
+                    if (ok) {
+                        ans.add(new ArrayList<Integer>(combine));
+                    }
+                }
+                return;
+            }
+
+            backTrack(nums, ans, combine, target, idx + 1);
+
+
+            if (combine.size() < 4) {
+                combine.add(nums[idx]);
+                backTrack(nums, ans, combine, target, idx);
+                combine.remove(combine.size() - 1);
+            }
+        }
+
+        public Map<String, Integer> valueRepeatCount(List<Integer> list) {
+            Map<String, Integer> set = new HashMap<>();
+            int val;
+            for (Integer integer : list) {
+                if (!set.containsKey(integer.toString())) {
+                    set.put(integer.toString(), 1);
+                } else {
+                    val = set.get(integer.toString());
+                    set.put(integer.toString(), val + 1);
+                }
+            }
+            return set;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
