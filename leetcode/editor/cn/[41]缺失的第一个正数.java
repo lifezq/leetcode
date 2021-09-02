@@ -66,7 +66,7 @@ class P_41_FirstMissingPositive {
             for (int num : nums) {
                 m.put(num, 1);
             }
-            
+
             int i = 1;
             while (i > 0) {
                 if (!m.containsKey(i)) {
