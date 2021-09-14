@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Node2 struct {
 	val   int
@@ -23,6 +25,24 @@ func dfs2(node *Node2, level int, k *int) int {
 	dfs2(node.right, level+1, k)
 
 	return *k
+}
+
+func maxDepth(node *Node2) int {
+	if node == nil {
+		return 0
+	} else {
+		leftHeight := maxDepth(node.left)
+		rightHeight := maxDepth(node.right)
+		return max(leftHeight, rightHeight) + 1
+	}
+}
+
+func max(i1, i2 int) int {
+	if i1 > i2 {
+		return i1
+	}
+
+	return i2
 }
 
 func main() {
@@ -50,4 +70,5 @@ func main() {
 
 	k := 0
 	fmt.Printf("二叉树dfs获取深度为：%d\n", dfs2(head, 1, &k))
+	fmt.Printf("二叉树maxDepth获取深度为：%d\n", maxDepth(head))
 }
