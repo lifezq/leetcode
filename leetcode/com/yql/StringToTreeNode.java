@@ -7,6 +7,7 @@ public class StringToTreeNode {
     public static void main(String[] args) {
         Node head = new StringToTreeNode().createNodeByString("A(B(C),D(,E))");
         new StringToTreeNode().bfs(head);
+        new StringToTreeNode().createStringByNode(head);
     }
 
     public void bfs(Node head) {
@@ -73,6 +74,30 @@ public class StringToTreeNode {
         }
 
         return root;
+    }
+
+    public String createStringByNode(Node head) {
+        StringBuilder sb = new StringBuilder();
+        treeToString(head, sb);
+        System.out.println(" ");
+        System.out.println(sb.toString());
+        return sb.toString();
+    }
+
+    public void treeToString(Node head, StringBuilder sb) {
+
+        if (head == null) {
+            return;
+        }
+
+        sb.append(head.val);
+
+        sb.append('(');
+        treeToString(head.left, sb);
+
+
+        treeToString(head.right, sb);
+        sb.append(')');
     }
 
     public class Node {
