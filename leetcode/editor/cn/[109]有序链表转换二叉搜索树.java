@@ -68,7 +68,7 @@ class P_109_ConvertSortedListToBinarySearchTree {
             if (left == right) {
                 return null;
             }
-            
+
             ListNode mid = midNode(left, right);
             TreeNode root = new TreeNode(mid.val);
 
