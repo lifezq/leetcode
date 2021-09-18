@@ -10,6 +10,16 @@ type W struct {
 	c int64
 }
 
+func ptrInt(i *int) {
+	*i = 11
+	fmt.Printf("2.ptrInt.变量i值为：%d，指针存的地址：%v，地址：%v\n", *i, &(*i), &i)
+}
+
+func sliceArg(s []int) {
+	s[0] = 222
+	fmt.Printf("2.sliceArg变更s值为：%v，地址：%v %v\n", s, &s[0], &s)
+}
+
 func main() {
 	var w *W = new(W)
 	//这时w的变量打印出来都是默认值0，0
@@ -20,4 +30,14 @@ func main() {
 	*((*int)(b)) = 10
 	//此时结果就变成了10，0
 	fmt.Println(w.b, w.c)
+
+	i := 0
+	fmt.Printf("1.变量i值为：%d，地址：%v\n", i, &i)
+	ptrInt(&i)
+	fmt.Printf("3.变量i值为：%d，地址：%v\n", i, &i)
+
+	s := []int{111}
+	fmt.Printf("1.变量s值为：%d，地址：%v\n", s, &s[0])
+	sliceArg(s)
+	fmt.Printf("3.变量s值为：%d，地址：%v\n", s, &s[0])
 }
