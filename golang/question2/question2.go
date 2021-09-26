@@ -29,5 +29,12 @@ type IProducer interface {
 func Question2(producer IProducer) {
 
 	// ====== 在这里书写代码 ====== //
-
+	concurrentChannel := make(chan bool, 5)
+	for iWorkload := producer.Produce(); iWorkload != nil; iWorkload = producer.Produce() {
+		concurrentChannel <- false
+		func() {
+			iWorkload.Work()
+			<-concurrentChannel
+		}()
+	}
 }
