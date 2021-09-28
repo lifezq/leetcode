@@ -32,7 +32,7 @@ func Question2(producer IProducer) {
 	concurrentChannel := make(chan bool, 5)
 	for iWorkload := producer.Produce(); iWorkload != nil; iWorkload = producer.Produce() {
 		concurrentChannel <- false
-		func(iWorkload IWorkload) {
+		go func(iWorkload IWorkload) {
 			iWorkload.Work()
 			<-concurrentChannel
 		}(iWorkload)

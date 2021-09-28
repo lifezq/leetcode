@@ -1,4 +1,4 @@
-package question1
+package main
 
 import (
 	"fmt"
@@ -29,7 +29,7 @@ func Question1(workload IWorkload) (err error) {
 
 	// ====== 在这里书写代码 ====== //
 	done := make(chan bool)
-	func() {
+	go func() {
 		workload.Process()
 		done <- true
 	}()
@@ -41,4 +41,21 @@ func Question1(workload IWorkload) (err error) {
 	case <-done:
 		return nil
 	}
+}
+
+type WorkLoad struct {
+}
+
+func (w *WorkLoad) Process() {
+	tm := time.Tick(time.Second)
+	select {
+	case <-tm:
+		fmt.Println("work done!")
+		return
+	}
+}
+
+func main() {
+	myWorkLoad := &WorkLoad{}
+	Question1(myWorkLoad)
 }
