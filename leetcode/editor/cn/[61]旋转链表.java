@@ -116,6 +116,7 @@ class P_61_RotateList {
             return newHead;
         }
 
+       
         public ListNode newListNode(int val) {
             return new ListNode(val);
         }

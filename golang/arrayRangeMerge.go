@@ -26,6 +26,7 @@ func arrayRangeMerge(s [][]int, k []int) [][]int {
 		if len(merge) == 0 || merge[len(merge)-1][1] < left {
 			merge = append(merge, s[i])
 		} else {
+
 			maxRight := right
 			if merge[len(merge)-1][1] > maxRight {
 				maxRight = merge[len(merge)-1][1]
