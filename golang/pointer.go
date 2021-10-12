@@ -37,7 +37,7 @@ func main() {
 	fmt.Printf("3.变量i值为：%d，地址：%v\n", i, &i)
 
 	s := []int{111}
-	fmt.Printf("1.变量s值为：%d，地址：%v\n", s, &s[0])
+	fmt.Printf("1.变量s值为：%d，地址：%v %v\n", s, &s[0], &s)
 	sliceArg(s)
-	fmt.Printf("3.变量s值为：%d，地址：%v\n", s, &s[0])
+	fmt.Printf("3.变量s值为：%d，地址：%v %v\n", s, &s[0], &s)
 }
