@@ -1,5 +1,7 @@
 package com.yql;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class DFSTree {
@@ -13,11 +15,14 @@ public class DFSTree {
         head.right.left = new DFSTree().new Node(6);
         head.right.right = new DFSTree().new Node(7);
 
+        System.out.println("二叉树深度为：" + new DFSTree().dfs(head));
         new DFSTree().dfs1(head);
         System.out.println("");
         new DFSTree().dfsPreOrder(head);
         System.out.println("");
         new DFSTree().dfsInOrder(head);
+        System.out.println("");
+        new DFSTree().dfsPostOrder(head);
     }
 
     public int dfs(Node head) {
@@ -85,8 +90,36 @@ public class DFSTree {
         }
     }
 
+    //后序遍历
+    // 主要思路是从二叉树右侧遍历后逆序即可
+    public void dfsPostOrder(Node head) {
+        if (head == null) {
+            return;
+        }
+
+        Node node = head;
+        Stack<Node> s = new Stack<>();
+        s.push(node);
+        List<Integer> items = new ArrayList<>();
+        Node temp;
+        while (!s.isEmpty()) {
+            temp = s.pop();
+            items.add(temp.val);
+            if (temp.left != null) {
+                s.push(temp.left);
+            }
+            if (temp.right != null) {
+                s.push(temp.right);
+            }
+        }
+
+        for (int i = items.size() - 1; i >= 0; i--) {
+            System.out.print(items.get(i) + ",");
+        }
+    }
+
     public class Node {
-        
+
         public int val;
         public Node left;
         public Node right;
