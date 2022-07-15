@@ -1,4 +1,4 @@
-package com.yql;
+package com.yql.leetcode;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;

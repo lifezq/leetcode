@@ -1,4 +1,4 @@
-package com.yql;
+package com.yql.leetcode;
 
 /*
 这是一种细胞自动机，每一个位置有两种状态，1为活细胞，0为死细胞，对于每个位置都满足如下的条件：

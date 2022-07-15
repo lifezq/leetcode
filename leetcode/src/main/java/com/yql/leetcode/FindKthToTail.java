@@ -1,4 +1,4 @@
-package com.yql;
+package com.yql.leetcode;
 
 public class FindKthToTail {
 

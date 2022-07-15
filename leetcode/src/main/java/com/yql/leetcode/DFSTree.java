@@ -1,4 +1,4 @@
-package com.yql;
+package com.yql.leetcode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class DFSTree {
         dfs1(head.right);
     }
 
-    //前序遍历
+    //前序遍历 - 根左右
     public void dfsPreOrder(Node head) {
         if (head == null) {
             return;
@@ -68,7 +68,7 @@ public class DFSTree {
         }
     }
 
-    //中序遍历
+    //中序遍历 - 左根右
     public void dfsInOrder(Node head) {
         if (head == null) {
             return;
@@ -90,7 +90,7 @@ public class DFSTree {
         }
     }
 
-    //后序遍历
+    //后序遍历 - 左右根
     // 主要思路是从二叉树右侧遍历后逆序即可
     public void dfsPostOrder(Node head) {
         if (head == null) {

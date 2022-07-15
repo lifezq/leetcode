@@ -1,4 +1,4 @@
-package com.yql;
+package com.yql.leetcode;
 
 //合并两个文件
 //        1. 文科生成绩表
@@ -24,6 +24,6 @@ package com.yql;
 
 public class MergeSubject {
     public static void main(String[] args) {
-        
+
     }
 }
