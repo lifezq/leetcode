@@ -27,11 +27,21 @@ public class BitMap<V> {
     }
 
     public void set(V v) {
+        if (contains(v)) {
+            return;
+        }
         int bitIndex = hash(v);
-        int wordIndex = bitIndex >> ADDRESS_BITS_PER_WORD;
+        int wordIndex = wordIndex(bitIndex);
         expandTo(wordIndex);
         words[wordIndex] |= 1L << bitIndex;
         wordCount++;
+    }
+
+    public boolean contains(V v) {
+        int bitIndex = hash(v);
+        int wordIndex = wordIndex(bitIndex);
+        expandTo(wordIndex);
+        return (words[wordIndex] & (1L << bitIndex)) == 1L << bitIndex;
     }
 
     public long getWordCount() {
@@ -44,7 +54,7 @@ public class BitMap<V> {
 
     public int hash(Object value) {
         int h;
-        return (value == null) ? 0 : ((h = value.hashCode()) ^ (h >>> 16));
+        return (value == null) ? 0 : ((h = Math.abs(value.hashCode())) ^ (h >>> 16));
     }
 
     public void expandTo(int wordIndex) {
@@ -52,10 +62,5 @@ public class BitMap<V> {
         if (words.length < wordRequiredIndex) {
             words = Arrays.copyOf(words, wordRequiredIndex);
         }
-    }
-
-    public static void main(String[] args) {
-        BitMap<String> m = new BitMap<>();
-        System.out.println(m.getWordCount());
     }
 }
