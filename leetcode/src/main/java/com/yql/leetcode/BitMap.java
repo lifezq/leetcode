@@ -18,7 +18,7 @@ public class BitMap<V> {
     private long[] words;
     private long wordCount = 0;
 
-    BitMap() {
+    public BitMap() {
         initWord(BITS_PER_WORD);
     }
 
