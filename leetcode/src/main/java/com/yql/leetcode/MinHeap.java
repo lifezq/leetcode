@@ -37,7 +37,7 @@ public class MinHeap {
         if (idx > 0) {
             data[idx] = v;
         } else {
-            minHeapify();
+            heapify();
         }
     }
 
@@ -55,7 +55,7 @@ public class MinHeap {
         System.out.println("minHeap:" + Arrays.toString(topK()));
     }
 
-    public void minHeapify() {
+    public void heapify() {
         int i = (topK + 1) / 2;
         while (i >= 0) {
             shiftDown(i);

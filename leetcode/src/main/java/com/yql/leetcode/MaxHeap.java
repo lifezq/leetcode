@@ -34,7 +34,7 @@ public class MaxHeap {
         if (idx > 0) {
             data[idx] = v;
         } else {
-            minHeapify();
+            heapify();
         }
     }
 
@@ -52,7 +52,7 @@ public class MaxHeap {
         System.out.println("maxHeap:" + Arrays.toString(topK()));
     }
 
-    public void minHeapify() {
+    public void heapify() {
         int i = (topK + 1) / 2;
         while (i >= 0) {
             shiftDown(i);
