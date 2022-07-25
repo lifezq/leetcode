@@ -2,6 +2,8 @@ package com.yql.leetcode;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 /**
  * @Package com.yql.leetcode
  * @ClassName MinHeapTest
@@ -25,5 +27,10 @@ public class HeapTest {
         MaxHeap mh = new MaxHeap();
         mh.add(numbers);
         mh.print();
+    }
+
+    @Test
+    public void testHeapSort() {
+        System.out.println(Arrays.toString(HeapSort.sort(numbers)));
     }
 }
