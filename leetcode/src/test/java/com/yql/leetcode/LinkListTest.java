@@ -30,7 +30,7 @@ public class LinkListTest {
 
     @Test
     public void testReverseRange() {
-        print(reverseRange(1, 6));
+        print(reverseRange(2, 4));
     }
 
     private Node reverseRange(int from, int to) {
